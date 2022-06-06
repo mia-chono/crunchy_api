@@ -6,12 +6,12 @@ import requests
 
 from requests import Response
 
-from api.api_endpoint import ApiEndpoint
-from api.crunchy_obj.account import Account
-from api.crunchy_obj.episode import Episode
-from api.crunchy_obj.episode_stream import EpisodeStream
-from api.crunchy_obj.season import Season
-from api.request_type import RequestType
+from crunchy_api.api_endpoint import ApiEndpoint
+from crunchy_api.crunchy_obj.account import Account
+from crunchy_api.crunchy_obj.episode import Episode
+from crunchy_api.crunchy_obj.episode_stream import EpisodeStream
+from crunchy_api.crunchy_obj.season import Season
+from crunchy_api.request_type import RequestType
 
 
 class CrunchyApi:
@@ -176,7 +176,7 @@ class CrunchyApi:
             params=params
         )
 
-        return [Episode(item) for item in json.get("Items")]
+        return [Episode(item) for item in json.get("items")]
 
     def get_episode(self, episode_id: str) -> Episode:
         """Get an episode from its id"""

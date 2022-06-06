@@ -1,4 +1,4 @@
-from api.crunchy_obj.image import Image
+from crunchy_api.crunchy_obj.image import Image
 
 
 class Images:

@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 from json import dumps
 from typing import Optional
 
-from api.crunchy_obj.base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
-from api.crunchy_obj.cms import CMS
+from crunchy_api.crunchy_obj.base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
+from crunchy_api.crunchy_obj.cms import CMS
 
 
 class Account(BaseCrunchyrollObjectInterface):
