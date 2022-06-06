@@ -1,7 +1,6 @@
 import re
-import urllib.parse
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional
 
 import requests
 
@@ -16,7 +15,7 @@ from api.request_type import RequestType
 
 class CrunchyApi:
     """
-        TODO mini description
+    The API allows to search for series, seasons, episodes, and more.
     """
 
     def __init__(
@@ -34,9 +33,13 @@ class CrunchyApi:
         self.account = Account(dict())
 
     def login(self) -> Account:
+        """Start a new session with the API"""
+
         return self._create_session()
 
     def _create_session(self, refresh: bool = False) -> Account:
+        """Initiate a new session or refresh the session with the API"""
+
         if not refresh:
             data = {
                 "username": self.username,
@@ -44,7 +47,7 @@ class CrunchyApi:
                 "grant_type": "password",
                 "scope": "offline_access",
             }
-        elif refresh:
+        else:
             data = {
                 "refresh_token": self.account.refresh_token,
                 "grant_type": "refresh_token",
@@ -62,7 +65,7 @@ class CrunchyApi:
             headers=headers,
             data=data
         )
-        json = self._check_request_error(r)
+        json = self._check_request(r)
         self.account.load_data_source(json)
 
         json = self._make_request(RequestType.GET, ApiEndpoint.INDEX)
@@ -80,6 +83,8 @@ class CrunchyApi:
             data: Optional[dict] = None,
             params: Optional[dict] = None
     ) -> dict:
+        """Generic method to make a request to the API"""
+
         if self.account and self.account.expires_in <= datetime.utcnow():
             self._create_session(refresh=True)
 
@@ -101,10 +106,12 @@ class CrunchyApi:
             params=params
         )
 
-        return self._check_request_error(r)
+        return self._check_request(r)
 
     @staticmethod
-    def _check_request_error(r: Response) -> dict:
+    def _check_request(r: Response) -> dict:
+        """Check if the request was successful"""
+
         code: int = r.status_code
         json: [dict] = r.json()
 
@@ -129,7 +136,9 @@ class CrunchyApi:
         pattern = r"https?:\/\/(www\.)?beta\.crunchyroll\.com\/[a-zA-Z]{2}\/watch\/\w+(\/\w+)?"
         return True if re.match(pattern, url) else False
 
-    def get_season_from_series_id(self, series_id: str) -> [Season]:
+    def get_seasons_from_series_id(self, series_id: str) -> [Season]:
+        """Get all seasons from a series"""
+
         params = {
             "series_id": series_id,
             "locale": self.locale,
@@ -146,7 +155,9 @@ class CrunchyApi:
 
         return [Season(item) for item in json.get("items")]
 
-    def get_episodes_from_season_id(self, season_id: str):
+    def get_episodes_from_season_id(self, season_id: str) -> [Episode]:
+        """Get all episodes from a season"""
+
         params = {
             "season_id": season_id,
             "locale": self.locale,
