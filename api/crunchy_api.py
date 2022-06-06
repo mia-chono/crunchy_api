@@ -117,3 +117,30 @@ class CrunchyApi:
             raise Exception("Unknown Error {code}: {message}".format(code=code, message=r.text))
 
         return json
+
+    @staticmethod
+    def is_series_link(url: str) -> bool:
+        pattern = r"https?:\/\/(www\.)?beta\.crunchyroll\.com\/[a-zA-Z]{2}\/series\/\w+(\/\w+)?"
+        return True if re.match(pattern, url) else False
+
+    @staticmethod
+    def is_episode_link(url: str) -> bool:
+        pattern = r"https?:\/\/(www\.)?beta\.crunchyroll\.com\/[a-zA-Z]{2}\/watch\/\w+(\/\w+)?"
+        return True if re.match(pattern, url) else False
+
+    def get_season_from_series_id(self, series_id: str) -> [Season]:
+        params = {
+            "series_id": series_id,
+            "locale": self.locale,
+            "Policy": self.account.cms.policy,
+            "Signature": self.account.cms.signature,
+            "Key-Pair-Id": self.account.cms.key_pair_id,
+        }
+        json = self._make_request(
+            RequestType.POST,
+            ApiEndpoint.SEASONS.format(bucket=self.account.cms.bucket),
+            params=params
+        )
+
+        return [Season(item) for item in json.get("items")]
+
