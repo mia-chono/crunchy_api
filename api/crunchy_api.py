@@ -9,6 +9,7 @@ from requests import Response
 
 from api.api_endpoint import ApiEndpoint
 from api.crunchy_obj.account import Account
+from api.crunchy_obj.episode import Episode
 from api.crunchy_obj.season import Season
 from api.request_type import RequestType
 
@@ -136,11 +137,28 @@ class CrunchyApi:
             "Signature": self.account.cms.signature,
             "Key-Pair-Id": self.account.cms.key_pair_id,
         }
+
         json = self._make_request(
-            RequestType.POST,
+            RequestType.GET,
             ApiEndpoint.SEASONS.format(bucket=self.account.cms.bucket),
             params=params
         )
 
         return [Season(item) for item in json.get("items")]
 
+    def get_episodes_from_season_id(self, season_id: str):
+        params = {
+            "season_id": season_id,
+            "locale": self.locale,
+            "Policy": self.account.cms.policy,
+            "Signature": self.account.cms.signature,
+            "Key-Pair-Id": self.account.cms.key_pair_id,
+        }
+
+        json = self._make_request(
+            RequestType.GET,
+            ApiEndpoint.EPISODES.format(bucket=self.account.cms.bucket),
+            params=params
+        )
+
+        return [Episode(item) for item in json.get("Items")]
