@@ -48,7 +48,8 @@ class Episode(BaseCrunchyrollObjectInterface):
         self.availability_notes: Optional[str] = data_source.get("availability_notes")
 
     def load_data_source(self, data_source: dict):
-        self.links = EpisodeLinks(data_source.get("__links__", {}))
+        if data_source.get("__links__"):
+            self.links = EpisodeLinks(data_source.get("__links__", {}))
         self.id = data_source.get("id") or self.id
         self.channel_id = data_source.get("channel_id") or self.channel_id
         self.series_id = data_source.get("series_id") or self.series_id
