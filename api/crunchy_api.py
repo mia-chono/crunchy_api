@@ -9,6 +9,7 @@ from requests import Response
 from api.api_endpoint import ApiEndpoint
 from api.crunchy_obj.account import Account
 from api.crunchy_obj.episode import Episode
+from api.crunchy_obj.episode_stream import EpisodeStream
 from api.crunchy_obj.season import Season
 from api.request_type import RequestType
 
@@ -173,3 +174,47 @@ class CrunchyApi:
         )
 
         return [Episode(item) for item in json.get("Items")]
+
+    def get_episode(self, episode_id: str) -> Episode:
+        """Get an episode from its id"""
+
+        params = {
+            "locale": self.locale,
+            "Policy": self.account.cms.policy,
+            "Signature": self.account.cms.signature,
+            "Key-Pair-Id": self.account.cms.key_pair_id,
+        }
+
+        json = self._make_request(
+            RequestType.GET,
+            ApiEndpoint.OBJECTS.format(bucket=self.account.cms.bucket, id=episode_id),
+            params=params
+        )
+        json_item = json.get("items", [{}])[0]
+        episode = Episode(json_item)
+        episode.load_data_source(json_item.get("episode_metadata", {}))
+
+        return episode
+
+    def get_streams(
+            self,
+            episode: Episode
+    ) -> EpisodeStream:
+        """Get streams from an episode"""
+
+        stream_id = re.search(r"videos\/(.+?)\/streams", episode.links.streams.href).group(1)
+
+        params = {
+            "locale": self.locale,
+            "Policy": self.account.cms.policy,
+            "Signature": self.account.cms.signature,
+            "Key-Pair-Id": self.account.cms.key_pair_id,
+        }
+
+        json = self._make_request(
+            RequestType.GET,
+            ApiEndpoint.STREAMS.format(bucket=self.account.cms.bucket, id=stream_id),
+            params=params
+        )
+
+        return EpisodeStream(json)
