@@ -99,6 +99,17 @@ class CrunchyApi:
             'Authorization': '{type} {key}'.format(type=authorization.get("type"), key=authorization.get("key")),
         }
 
+        if method == RequestType.GET:
+            if params is None:
+                params = {}
+
+            params.update({
+                "locale": self.locale,
+                "Policy": self.account.cms.policy,
+                "Signature": self.account.cms.signature,
+                "Key-Pair-Id": self.account.cms.key_pair_id,
+            })
+
         r = self.http.request(
             method=str(method),
             url=str(url),
@@ -142,10 +153,6 @@ class CrunchyApi:
 
         params = {
             "series_id": series_id,
-            "locale": self.locale,
-            "Policy": self.account.cms.policy,
-            "Signature": self.account.cms.signature,
-            "Key-Pair-Id": self.account.cms.key_pair_id,
         }
 
         json = self._make_request(
@@ -161,10 +168,6 @@ class CrunchyApi:
 
         params = {
             "season_id": season_id,
-            "locale": self.locale,
-            "Policy": self.account.cms.policy,
-            "Signature": self.account.cms.signature,
-            "Key-Pair-Id": self.account.cms.key_pair_id,
         }
 
         json = self._make_request(
@@ -178,17 +181,9 @@ class CrunchyApi:
     def get_episode(self, episode_id: str) -> Episode:
         """Get an episode from its id"""
 
-        params = {
-            "locale": self.locale,
-            "Policy": self.account.cms.policy,
-            "Signature": self.account.cms.signature,
-            "Key-Pair-Id": self.account.cms.key_pair_id,
-        }
-
         json = self._make_request(
             RequestType.GET,
-            ApiEndpoint.OBJECTS.format(bucket=self.account.cms.bucket, id=episode_id),
-            params=params
+            ApiEndpoint.OBJECTS.format(bucket=self.account.cms.bucket, id=episode_id)
         )
         json_item = json.get("items", [{}])[0]
         episode = Episode(json_item)
@@ -204,17 +199,9 @@ class CrunchyApi:
 
         stream_id = re.search(r"videos\/(.+?)\/streams", episode.links.streams.href).group(1)
 
-        params = {
-            "locale": self.locale,
-            "Policy": self.account.cms.policy,
-            "Signature": self.account.cms.signature,
-            "Key-Pair-Id": self.account.cms.key_pair_id,
-        }
-
         json = self._make_request(
             RequestType.GET,
-            ApiEndpoint.STREAMS.format(bucket=self.account.cms.bucket, id=stream_id),
-            params=params
+            ApiEndpoint.STREAMS.format(bucket=self.account.cms.bucket, id=stream_id)
         )
 
         return EpisodeStream(json)
