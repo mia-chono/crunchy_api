@@ -25,7 +25,7 @@ class Account(BaseCrunchyrollObjectInterface):
         self.email: Optional[str] = data.get("email")
         self.maturity_rating: Optional[str] = data.get("maturity_rating")
         self.account_language: Optional[str] = data.get("preferred_communication_language")
-        self.subtitles_language: Optional[str] = data.get("preferred_communication_language")
+        self.subtitles_language: Optional[str] = data.get("preferred_content_subtitle_language")
         self.username: Optional[str] = data.get("username")
 
     def load_data_source(self, data_source: dict):
