@@ -1,7 +1,7 @@
 from typing import Optional
 
-from crunchy_api.crunchy_obj.base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
-from crunchy_api.crunchy_obj.stream import Stream
+from crunchy_api.crunchy_api.crunchy_obj.base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
+from crunchy_api.crunchy_api.crunchy_obj.stream import Stream
 
 
 class Streams(BaseCrunchyrollObjectInterface):

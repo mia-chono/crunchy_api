@@ -1,8 +1,8 @@
 from typing import Optional
 
-from crunchy_api.crunchy_obj.base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
-from crunchy_api.crunchy_obj.streams import Streams
-from crunchy_api.crunchy_obj.subtitles import Subtitle
+from crunchy_api.crunchy_api.crunchy_obj.base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
+from crunchy_api.crunchy_api.crunchy_obj.streams import Streams
+from crunchy_api.crunchy_api.crunchy_obj.subtitles import Subtitle
 
 
 class EpisodeStream(BaseCrunchyrollObjectInterface):

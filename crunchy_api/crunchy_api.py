@@ -6,12 +6,13 @@ import requests
 
 from requests import Response
 
-from crunchy_api.api_endpoint import ApiEndpoint
-from crunchy_api.crunchy_obj.account import Account
-from crunchy_api.crunchy_obj.episode import Episode
-from crunchy_api.crunchy_obj.episode_stream import EpisodeStream
-from crunchy_api.crunchy_obj.season import Season
-from crunchy_api.request_type import RequestType
+from crunchy_api.crunchy_api.api_endpoint import ApiEndpoint
+from crunchy_api.crunchy_api.crunchy_obj.account import Account
+from crunchy_api.crunchy_api.crunchy_obj.episode import Episode
+from crunchy_api.crunchy_api.crunchy_obj.episode_stream import EpisodeStream
+from crunchy_api.crunchy_api.crunchy_obj.season import Season
+
+from crunchy_api.crunchy_api.request_type import RequestType
 
 
 class CrunchyApi:
