@@ -1,8 +1,8 @@
 from typing import Optional
 
-from crunchy_api.crunchy_api.crunchy_obj.base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
-from crunchy_api.crunchy_api.crunchy_obj.episode_links import EpisodeLinks
-from crunchy_api.crunchy_api.crunchy_obj.images import Images
+from .base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
+from .episode_links import EpisodeLinks
+from .images import Images
 
 
 class Episode(BaseCrunchyrollObjectInterface):

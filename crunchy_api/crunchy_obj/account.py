@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 from json import dumps
 from typing import Optional
 
-from crunchy_api.crunchy_api.crunchy_obj.base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
-from crunchy_api.crunchy_api.crunchy_obj.cms import CMS
+from .base_crunchyroll_object_interface import BaseCrunchyrollObjectInterface
+from .cms import CMS
 
 
 class Account(BaseCrunchyrollObjectInterface):
@@ -25,7 +25,7 @@ class Account(BaseCrunchyrollObjectInterface):
         self.email: Optional[str] = data.get("email")
         self.maturity_rating: Optional[str] = data.get("maturity_rating")
         self.account_language: Optional[str] = data.get("preferred_communication_language")
-        self.subtitles_language: Optional[str] = data.get("preferred_content_subtitle_language")
+        self.subtitles_language: Optional[str] = data.get("preferred_communication_language")
         self.username: Optional[str] = data.get("username")
 
     def load_data_source(self, data_source: dict):
